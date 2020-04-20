@@ -1,0 +1,31 @@
+@import "color";
+
+.button {
+  &-primary {
+    background-color: @primary;
+  }
+  &-default {
+    background-color: @default;
+  }
+  &-warn {
+    background-color: @warn;
+  }
+  &-danger {
+    background-color: @danger;
+  }
+  background-color: @default;
+  color: @text-default;
+
+  border: 1px solid #4e4f66;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 15px;
+  display: inline-block;
+  min-width: 60px;
+  text-align: center;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(118, 124, 179, 0.5);
+  }
+}
