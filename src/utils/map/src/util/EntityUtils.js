@@ -1,14 +1,16 @@
 import * as Cesium from "cesium";
 import * as turf from "@turf/turf";
 import Coords from "./Coords";
+import BillboardEntity from "../entity/BillboardEntity";
+import PolylineEntity from "../entity/PolylineEntity";
 
 export default class EntityUtils {
     config;
     viewer;
     dataSource;
     hasEdit = false;
-    editType;
     coords;
+    editEntity;
 
     constructor({viewer, config, hasEdit}) {
         this.viewer = viewer;
@@ -16,6 +18,8 @@ export default class EntityUtils {
         this.hasEdit = hasEdit;
         this.coords = new Coords(viewer);
 
+        this.dataSource = new Cesium.CustomDataSource("editor");
+        this.viewer.dataSources.add(this.dataSource);
         if(config) {
             this.create();
         }
@@ -24,102 +28,38 @@ export default class EntityUtils {
     create(config){
         config = config || this.config;
 
-        const { type, id, name, description, tooltip, onClick, style } = config;
+        const { type } = config;
 
         let entity;
         switch (type) {
             default: break;
             case 'billboard':
-                entity = this.createBillboard(style, config.position);
+                entity = new BillboardEntity(this.viewer, config, this.dataSource);
                 break;
             case 'polyline':
-                entity = this.createPolyline(style);
+                entity = new PolylineEntity(this.viewer, config, this.dataSource);
                 break;
             case 'point':
                 break;
         }
+
         if(entity) {
-            if(id) {
-                entity.id = id;
+            if (this.hasEdit) {
+                this.stopEdit();
+
+                this.editEntity = entity;
+                this.editEntity.startEdit();
             }
-            if(name) {
-                entity.name = name;
-            }
-            if(description) {
-                entity.description = description;
-            }
-            entity.tooltip = tooltip;
-            entity.onClick = onClick;
 
-            // entity = new Cesium.Entity(entity);
-
-            if(this.hasEdit) {
-                this.startEdit(type, entity);
-            }
-        }
-
-        return entity;
-    }
-
-    startEdit(type, entity){
-        const that = this;
-
-        this.stopEdit();
-
-        if(null == this.dataSource) {
-            this.dataSource = new Cesium.CustomDataSource();
-            this.viewer.dataSources.add(this.dataSource);
-        }
-
-        const eventHandler = this.viewer.eventHandler;
-
-        if(null == this.eventId) {
-            this.editType = type;
-
-            if(type === 'billboard') {
-                this.eventId = eventHandler.onLeftClick({
-                    handler(pick, viewer, e) {
-                        console.log(e);
-                        const {position} = e;
-                        const screenPosition = new Cesium.Cartesian2(position.x, position.y);
-                        entity.position = viewer.scene.globe.pick(viewer.camera.getPickRay(screenPosition), viewer.scene);
-
-                        console.log(entity);
-                        that.dataSource.entities.add(entity);
-                    }
-                });
-            }
-            if(type === 'polyline') {
-                const positions = [];
-                const polyline = this.dataSource.entities.add(entity);
-                polyline.polyline.positions = new Cesium.CallbackProperty(() => {
-                    return positions;
-                }, false);
-
-                this.eventId = eventHandler.onLeftClick({
-                    handler(pick, viewer, e){
-                        const { position } = e;
-                        const screenPosition = new Cesium.Cartesian2(position.x, position.y);
-                        const clickPosition = viewer.scene.globe.pick(viewer.camera.getPickRay(screenPosition), viewer.scene);
-
-                        positions.push(clickPosition);
-                    }
-                });
-                const endEventId = eventHandler.onRightClick({
-                    handler(pick, viewer, e){
-
-                        eventHandler.removeById(endEventId);
-                        that.stopEdit();
-                    }
-                });
-            }
+            return entity.getEntity();
+        }else {
+            return null;
         }
     }
 
     stopEdit(){
-        if(null != this.viewer.eventHandler && null != this.eventId) {
-            this.viewer.eventHandler.removeById(this.eventId);
-            this.eventId = null;
+        if(this.editEntity) {
+            this.editEntity.stopEdit();
         }
     }
 
@@ -132,9 +72,21 @@ export default class EntityUtils {
         }
         const features = [];
         this.dataSource.entities.values.forEach(entity => {
+            const tooltip = entity.tooltip?entity.tooltip._value:undefined;
+            const description = entity.description?entity.description._value:undefined;
             if(entity.billboard) {
                 const {lng, lat, height} = this.coords.worldPositionToWgs84(entity.position._value);
-                features.push(turf.point([lng, lat, height]))
+                const { scale, color, image, heightReference } = entity.billboard;
+                features.push(turf.point([lng, lat, height], {
+                    tooltip,
+                    description,
+                    style: {
+                        color: color?color._value:undefined,
+                        image: image?image._value:undefined,
+                        scale: scale?scale._value:undefined,
+                        clampToGround: heightReference._value === Cesium.HeightReference.CLAMP_TO_GROUND
+                    }
+                }))
             }
             if(entity.polyline) {
                 const positions = entity.polyline.positions.getValue(new Date().getTime());
@@ -143,12 +95,21 @@ export default class EntityUtils {
                         const {lng, lat, height} = this.coords.worldPositionToWgs84(position);
                         return [lng, lat, height];
                     });
-                    features.push(turf.lineString(points));
+                    const { width, material, clampToGround } = entity.polyline;
+                    features.push(turf.lineString(points, {
+                        tooltip,
+                        description,
+                        style: {
+                            width: width?width._value:undefined,
+                            color: material&&material.color?material.color._value:undefined,
+                            clampToGround: clampToGround?clampToGround._value:false,
+                        }
+                    }));
                 }
             }
         });
         const collections = turf.featureCollection(features);
-        console.log('save edit', collections);
+        console.log('save edit', collections, JSON.stringify(collections));
     }
 
     destroy(){
@@ -164,73 +125,5 @@ export default class EntityUtils {
             this.dataSource.entities.removeAll();
         }
     }
-
-    createBillboard(style, position){
-        const entity = {
-            billboard: {
-                // show: true,
-                rotation: 0,
-                color: Cesium.Color.WHITE,
-                horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
-                verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                heightReference: Cesium.HeightReference.CLAMP_TO_GROUND, //RELATIVE_TO_GROUND
-                scaleByDistance: new Cesium.NearFarScalar(1.5e2, 0.8, 6.0e4, 0.3),
-                distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 1e6),
-            }
-        }
-
-        Object.assign(entity.billboard, style);
-
-        if(position && position.length >= 2) {
-            if(position.length === 2) {
-                position[2] = 0;
-            }
-            entity.position = Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
-        }
-
-        return entity;
-    }
-
-    createPolyline(style) {
-        let material = style.color;
-        if(style.outlineWidth){
-            material = new Cesium.PolylineOutlineMaterialProperty({
-                color: style.color,
-                outlineWidth: style.outlineWidth,
-                outlineColor: new Cesium.Color.fromCssColorString(style.outlineColor||"#fff").withAlpha(1)
-            })
-        }else if(style.glowPower){
-            material = new Cesium.PolylineGlowMaterialProperty({
-                glowPower: style.glowPower,
-                color: style.color,
-            })
-        }
-
-        const entity = {
-            polyline: {
-                // positions: Cesium.Cartesian3.fromDegreesArrayHeights(style.positions),
-                width: style.width||10,
-                clampToGround: style.clampToGround||false,
-                material: material,
-                // distanceDisplayCondition: distanceDisplayCondition,
-                // scaleByDistance: new Cesium.NearFarScalar(1.5e2, 1, 7e3, 0.3),
-                zIndex: 1000
-            }
-        };
-
-        if(style.positions && style.positions.length) {
-            if(style.positions[0] instanceof Cesium.Cartesian3) {
-                entity.polyline.positions = style.positions;
-            }else {
-                entity.polyline.positions = Cesium.Cartesian3.fromDegreesArrayHeights(style.positions);
-            }
-        }else {
-            entity.polyline.positions = [];
-        }
-
-        return entity;
-    }
-
-
 
 }

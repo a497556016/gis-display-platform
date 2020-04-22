@@ -43,6 +43,23 @@ export default class EventHandler {
         }, Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
     }
 
+    containId(eventId){
+        let have = false;
+
+        have = this.leftClickHandlers.some(h => h.id === eventId);
+        if(!have) {
+            have = this.rightClickHandlers.some(h => h.id === eventId);
+        }
+        if(!have) {
+            have = this.mouseMoveHandlers.some(h => h.id === eventId);
+        }
+        if(!have) {
+            have = this.leftDoubleClickHandlers.some(h => h.id === eventId);
+        }
+
+        return have;
+    }
+
     on(event, handler = {id: undefined, index: 0, handler(){}}){
         handler = handler || {};
 

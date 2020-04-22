@@ -1,0 +1,62 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "tooltip": "",
+        "description": "",
+        "style": {
+          "color": {
+            "red": 1,
+            "green": 1,
+            "blue": 1,
+            "alpha": 1
+          },
+          "image": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAsCAMAAAAzZkq9AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAACKFBMVEUAAAD/MzP/MzP/MzP/MzP/MzP/MzP/MzP/MzP/MTH/MzP/MzP/LCz/MzP/MzP/MTH/MzP/LCz/KSn/MzP/LCz/LCz/MTH/GBj/LCz/LCz/MzP/FBT/MDD/IiL/FBT/Cwv/BAT/AQH/AQH/AwP/AQH/CAj/Bwf/ExP/ISH/AAD/ISH/AwP/FRX/AAD/FRX/AQH/AQH/EhL/AAD/AQH/Fxf/AAD/BQX/AAD/ERH/AAD/ERH/BAT/AAD/FRX/AAD/CQn/AAD/CQn/AwP/AAD/AwP/AAD/GBj/AAD/AAD/Dg7/AAAAAAAAAAAAAACFBAT8AAAAAAAAAAAAAACiAwP+AAAAAAC7AQEAAADQAAAAAAAAAAAAAAD/IiL/FRX/Cwv/BAT/AQH/FBT/AgL/AAD/GBj3AADlAADXAADRAADOAAD/CgrxAADWAADSAADVAAD/BQX9AADeAADUAADYAADaAADbAADcAADdAAD7AADoUVH/CQnVAQHTAADZAADeBAT53NzdAQHqYGD////WAwP0AADeBQXiBATqaGjXBwfeBgb64uLRBAT3wMDzp6fOAQHkcHD55ubVCQnRBQXskpLtsLDfaGjXDAzQAADNAAD54uLUBgbiExP88PD0FRXWDAzxHR3/DQ3dFBTfZmb9Hh7VCwv0zMzVBAT7JSXbUFD9JyfeFRX9Jib/Hh7xJibVDAz/Jyf2KyvkGxvXDQ3/CAj/Jib/Li7/MjIAAABAfqg1AAAAXHRSTlMADFeYyOn4JJv0CIj5iSPPMujqCdDRifqbnA30V5rI6/ny+Nbanp5ZCvELlyX7JKOkIfiKDeRRrBXpFk+WCdAk8CVP/lCIA7i5D9YEEh5F7iAyM2j6KXwokycsMMXtcvsAAAABYktHRACIBR1IAAAACXBIWXMAAAsSAAALEgHS3X78AAAC00lEQVQ4y21Uh1YTQRQdehGlKSjdioiodJEiGkHpEIr0hFwgLCQBkpBFCEVAQEFURETpgqIovXyfm2wlyTtnz87Mvee+NzP3DSFCODm7uLq5u7u5ujg7Efvw8PSqb2hUKJWKxoZ6L08PG9j7nE+TCkKomnzOe0vxC77NSqClVd1GUW3q1hZA2ewrEfHzbwc6NJRWp1GrNTotpekA2v39hPQBnejqpvQGY4+Jpk09RoOe6u5CZwCnEXhRgV6d1mBkUJp+xXwmo0Gr64XiUqCVENSHrn7zgBWmB4esP9OAub8LfUHWAoOBYS2H069HaI6hHQaCLUkuK9FBGTh8cIgj0CYD1QHlFUJCQoFRvZHmBXgCbdSPAqEhJEyFMUHgzZBIYCTGoAoj4cC4mReYGBEJtNE8DoSTCGBS18MuvX0nJfToJoEIEglMaUyiwMj09PR7NodmCogkUcCMWiJgiQ/sXD0DRJGrImGCwz9+EgnXyHVglkvxeW5uzkL4wk5N6lngBrkJzHNFfl1YWGDwb9/5IueBWyQaWBS2SdNLggCzzUUgmtyOwbJwUBYCL8Ac1DJi7hASi74V4agZgiCgX+lDLHNZd+OwKkosSQRWEXfPct/3sbYuXPfSDxN/3etreGA1THwCNjZ5w/z8xRtmcwMJ8aznEqHa2uQs95vmLLe5pUIiZ9qkZCj+bLOm1XCm3f6rQHISb+sUplX+7exSZtb2Zmp35x/TRiliY6Qy3bS2t39wODszM3t4sL+3xiykSjrrYZql4Y6aj09OT0+Om48ss7RH0t5Lh12kn+3eDFs8w6a9M7PO4lmZtu/D42wpnv3E/gV5KhNx2TMHTwzJEQk5jnCS+5zHX+Q6JJC8fBbPz3MIFxQWFZdY8JLiosICe7i0TC6Xl1cAFeXMoKzUllIpt0aVTFbFjiptCC/ZZXl1tdwxgU0hhH0Ka5E1tXVyeV1tjbTI/3XWqdMlNM9DAAAAAElFTkSuQmCC",
+          "clampToGround": false
+        }
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          114.38912079905768,
+          22.692926693456933,
+          -2.0940116559238535
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "tooltip": "",
+        "description": "",
+        "style": {
+          "width": 10,
+          "color": {
+            "red": 1,
+            "green": 1,
+            "blue": 0,
+            "alpha": 1
+          },
+          "clampToGround": true
+        }
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            114.390088508514,
+            22.693832099928816,
+            -0.0036606946876832965
+          ],
+          [
+            114.39142020502968,
+            22.691488792951606,
+            -0.004201538448387866
+          ]
+        ]
+      }
+    }
+  ]
+}

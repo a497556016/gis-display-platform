@@ -28,16 +28,18 @@ export default class GeoJsonLayer extends BaseLayer{
 
             entity.tooltip = properties.tooltip;
             entity.description = properties.description;
+
+            const style = properties.style._value;
             if(billboard) {
-                billboard.image = properties.image;
-                billboard.clampToGround = properties.clampToGround;
+                billboard.image = style.image;
+                billboard.clampToGround = style.clampToGround;
             }
             if(polyline) {
                 console.log(polyline, properties);
-                polyline.zIndex = properties.zIndex;
-                polyline.width = properties.width;
-                polyline.material.color =properties.color;
-                polyline.clampToGround = properties.clampToGround;
+                polyline.zIndex = style.zIndex;
+                polyline.width = style.width;
+                polyline.material.color =style.color;
+                polyline.clampToGround = style.clampToGround;
             }
             // entity.billboard.image = properties.image.getValue();
         })

@@ -92,7 +92,10 @@
                     type: "1",
                     url: "http://www.baidu.com",
                     title: "百度2",
-                    replace: true
+                    replace: true,
+                    close: () => {
+                        this.$viewer.dataSources.removeAll();
+                    }
                 })
             },
             hideLayer(){
