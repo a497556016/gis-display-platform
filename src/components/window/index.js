@@ -20,31 +20,33 @@ export default {
         });
 
         //默认的窗口
-        const defaultWindow = windowStore.createWindow(Component, '1');
+        const leftWindow = windowStore.createWindow(Component, 'left');
         //大尺寸窗口
-        const largeWindow = windowStore.createWindow(Component, '2');
+        const centerWindow = windowStore.createWindow(Component, 'center');
 
         Vue.prototype.$window = {
             open(option){
                 //默认替换当前页
                 option.replace = option.replace !== false;
-                if(option.type === '1') {
-                    return defaultWindow.open(option);
-                }else if(option.type === '2') {
-                    return largeWindow.open(option);
+                if(option.type === 'left') {
+                    return leftWindow.open(option);
+                }else if(option.type === 'center') {
+                    return centerWindow.open(option);
+                }else {
+                    return leftWindow.open(option);
                 }
             },
             close(type){
                 switch (type) {
                     default:
-                        defaultWindow.close();
-                        largeWindow.close();
+                        leftWindow.close();
+                        centerWindow.close();
                         break;
-                    case '1':
-                        defaultWindow.close();
+                    case 'left':
+                        leftWindow.close();
                         break;
-                    case '2':
-                        largeWindow.close();
+                    case 'center':
+                        centerWindow.close();
                         break;
                 }
             },
@@ -52,11 +54,11 @@ export default {
                 switch (type) {
                     default:
                         break;
-                    case '1':
-                        defaultWindow.setTitle(title);
+                    case 'left':
+                        leftWindow.setTitle(title);
                         break;
-                    case '2':
-                        largeWindow.setTitle(title);
+                    case 'center':
+                        centerWindow.setTitle(title);
                         break;
                 }
             }

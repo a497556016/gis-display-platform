@@ -13,33 +13,38 @@ export default class BaseEntity {
         style: {}
     };
     //实体信息
-    entity;
+    entityOption;
 
     constructor(viewer, config, dataSource){
         this.viewer = viewer;
-        Object.assign(this.config, config);
         this.dataSource = dataSource;
 
-        const entity = this.createEntity();
+        this.setConfig(config);
+    }
+
+    setConfig(config){
+        Object.assign(this.config, config);
+        this._initEntityOption();
+    }
+
+    _initEntityOption(){
+        const entity = this.buildEntityOption();
 
         if(!entity) {
             throw new Error('no entity created!')
         }else {
-            this.entity = entity;
+            console.log('entity is ready!', entity);
+            this.entityOption = entity;
 
-            this._setConfig();
+            const { id, tooltip, name, description, onClick } = this.config;
+            this.entityOption.id = id;
+            this.entityOption.tooltip = tooltip;
+            if(name) {
+                this.entityOption.name = name;
+            }
+            this.entityOption.description = description;
+            this.entityOption.onClick = onClick;
         }
-    }
-
-    _setConfig(){
-        const { id, tooltip, name, description, onClick } = this.config;
-        this.entity.id = id;
-        this.entity.tooltip = tooltip;
-        if(name) {
-            this.entity.name = name;
-        }
-        this.entity.description = description;
-        this.entity.onClick = onClick;
     }
 
     startEdit(){
@@ -66,11 +71,13 @@ export default class BaseEntity {
         }
     }
 
-    createEntity(){
+    buildEntityOption(){
 
     }
 
     getEntity(){
-        return this.entity;
+        return new Cesium.Entity(this.entityOption);
     }
+
+
 }

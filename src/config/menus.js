@@ -25,5 +25,11 @@ export default [
         ]
     },
     {title: "百度", path: "http://www.baidu.com", type: '2'},
-    {title: "测试", path: "/Test"}
+    {title: "测试", path: "/Test"},
+    {
+        title: "工具类",
+        children: [
+            {title: "图上标绘", icon: "cog", path: "/tools/plot/Index"}
+        ]
+    }
 ]

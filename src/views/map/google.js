@@ -1,5 +1,5 @@
 export default {
     setup(){
-        this.$maps.setLayer('google');
+        this.$viewer.maps.setMapLayer('google');
     }
 }

@@ -2,8 +2,12 @@ import BaseEntity from "./BaseEntity";
 import * as Cesium from "cesium";
 
 export default class PolylineEntity extends BaseEntity{
-    createEntity() {
+    buildEntityOption() {
         const {style} = this.config;
+        if(style.color && typeof style.color === 'string') {
+            style.color = Cesium.Color.fromCssColorString(style.color);
+        }
+
         let material = style.color;
         if(style.outlineWidth){
             material = new Cesium.PolylineOutlineMaterialProperty({
@@ -34,7 +38,9 @@ export default class PolylineEntity extends BaseEntity{
             if(style.positions[0] instanceof Cesium.Cartesian3) {
                 entity.polyline.positions = style.positions;
             }else {
-                entity.polyline.positions = Cesium.Cartesian3.fromDegreesArrayHeights(style.positions);
+                entity.polyline.positions = style.positions.map(position => {
+                    return Cesium.Cartesian3.fromDegrees(position[0], position[1], position[2]);
+                });
             }
         }else {
             entity.polyline.positions = [];
@@ -45,8 +51,9 @@ export default class PolylineEntity extends BaseEntity{
 
     onEdit() {
         const that = this;
-        const positions = [];
-        const polyline = this.dataSource.entities.add(this.entity);
+        const linePositions = [];
+        let positions = [], movePosition;
+        const polyline = this.dataSource.entities.add(this.entityOption);
         polyline.polyline.positions = new Cesium.CallbackProperty(() => {
             return positions;
         }, false);
@@ -54,20 +61,33 @@ export default class PolylineEntity extends BaseEntity{
         const eventId = this.viewer.eventHandler.onLeftClick({
             handler(pick, viewer, e){
                 const { position } = e;
-                const screenPosition = new Cesium.Cartesian2(position.x, position.y);
-                const clickPosition = viewer.scene.globe.pick(viewer.camera.getPickRay(screenPosition), viewer.scene);
+                const clickPosition = viewer.scene.globe.pick(viewer.camera.getPickRay(position), viewer.scene);
 
-                positions.push(clickPosition);
+                linePositions.push(clickPosition);
             }
         });
-        const endEventId = this.viewer.eventHandler.onRightClick({
+        this.moveEventId = this.viewer.eventHandler.onMouseMove({
             handler(pick, viewer, e){
+                const { endPosition } = e;
+                movePosition = viewer.scene.globe.pick(viewer.camera.getPickRay(endPosition), viewer.scene);
 
-                viewer.eventHandler.removeById(endEventId);
+                if(linePositions.length > 0) {
+                    positions = linePositions.concat(movePosition);
+                }
+            }
+        })
+        this.endEventId = this.viewer.eventHandler.onRightClick({
+            handler(pick, viewer, e){
                 that.stopEdit();
             }
         });
 
         return eventId;
+    }
+
+    stopEdit() {
+        super.stopEdit();
+        this.viewer.eventHandler.removeById(this.moveEventId);
+        this.viewer.eventHandler.removeById(this.endEventId);
     }
 }

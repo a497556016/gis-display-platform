@@ -6,7 +6,7 @@ export default class BillboardEntity extends BaseEntity{
         super(viewer, config, dataSource);
     }
 
-    createEntity() {
+    buildEntityOption() {
         const entity = {
             billboard: {
                 // show: true,
@@ -14,12 +14,15 @@ export default class BillboardEntity extends BaseEntity{
                 color: Cesium.Color.WHITE,
                 horizontalOrigin: Cesium.HorizontalOrigin.CENTER,
                 verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                heightReference: this.config.clampToGround?Cesium.HeightReference.CLAMP_TO_GROUND:Cesium.HeightReference.NONE, //RELATIVE_TO_GROUND
+                heightReference: this.config.style.clampToGround?Cesium.HeightReference.CLAMP_TO_GROUND:Cesium.HeightReference.NONE, //RELATIVE_TO_GROUND
                 scaleByDistance: new Cesium.NearFarScalar(1.5e2, 0.8, 6.0e4, 0.3),
                 distanceDisplayCondition: new Cesium.DistanceDisplayCondition(0, 1e6),
             }
         }
 
+        if(this.config.style.color && typeof this.config.style.color === 'string') {
+            this.config.style.color = Cesium.Color.fromCssColorString(this.config.style.color);
+        }
         Object.assign(entity.billboard, this.config.style);
 
         if(this.config.position && this.config.position.length >= 2) {
@@ -39,12 +42,16 @@ export default class BillboardEntity extends BaseEntity{
                 console.log(e);
                 const {position} = e;
                 const screenPosition = new Cesium.Cartesian2(position.x, position.y);
-                that.entity.position = viewer.scene.globe.pick(viewer.camera.getPickRay(screenPosition), viewer.scene);
+                that.entityOption.position = viewer.scene.globe.pick(viewer.camera.getPickRay(screenPosition), viewer.scene);
 
-                console.log(that.entity);
-                that.dataSource.entities.add(that.entity);
+                console.log(that.entityOption);
+                that.dataSource.entities.add(that.entityOption);
             }
         });
         return eventId;
+    }
+
+    toGeoJson() {
+
     }
 }

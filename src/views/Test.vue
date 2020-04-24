@@ -9,11 +9,6 @@
                 <a class="button" @click="hideLayer">隐藏图层</a>
                 <a class="button" @click="showLayer">打开图层</a>
             </div>
-            <div>
-                <a class="button" @click="editPolyline">编辑线</a>
-                <a class="button" @click="removeEdit">清除编辑</a>
-                <a class="button" @click="saveEdit">保存</a>
-            </div>
         </div>
     </div>
 </template>
@@ -23,6 +18,7 @@
     import IssueLayer from "../utils/layers/IssueLayer";
     import map from "../utils/map";
     import * as Cesium from "cesium";
+    import AreaLayer from "../utils/layers/AreaLayer";
 
     export default {
         name: "Test",
@@ -32,7 +28,9 @@
             }
         },
         mounted() {
-
+            this.areaLayer = new AreaLayer(this.$viewer, '区域图层', {
+                flyTo: false,
+            });
             this.roadLayer = new RoadLayer(this.$viewer, '道路图层', {
                 flyTo: false,
                 style: {
@@ -43,16 +41,6 @@
             });
             this.issueLayer = new IssueLayer(this.$viewer, '隐患图层', {
                 flyTo: false
-            });
-            this.entityUtils = new map.utils.EntityUtils({
-                viewer: this.$viewer,
-                config: {
-                    type: 'billboard',
-                    style: {
-                        image: require('../assets/images/marker/mark-thunder.png')
-                    }
-                },
-                hasEdit: true
             });
             this.$layer.addMarkers([
                 {
@@ -108,21 +96,8 @@
                 this.issueLayer.setVisible(true);
                 this.$layer.setVisible(true);
             },
-            removeEdit(){
-                this.entityUtils.removeAll();
-            },
-            editPolyline(){
-                this.entityUtils.create({
-                    type: "polyline",
-                    style: {
-                        color: Cesium.Color.YELLOW,
-                        clampToGround: true
-                    }
-                })
-            },
-            saveEdit(){
-                this.entityUtils.saveEdit();
-            }
+
+
         }
     }
 </script>

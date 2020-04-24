@@ -1,20 +1,20 @@
-import {Cartesian3, Math, Cartographic, SceneTransforms} from "cesium";
+import * as Cesium from "cesium";
 
 export default class Coords {
-    constructor(viewer) {
+    constructor(viewer){
         this.viewer = viewer;
     }
 
     wgs84ToWorldPosition({lng, lat, height}){
-        return Cartesian3.fromDegrees(lng, lat, height);
+        return Cesium.Cartesian3.fromDegrees(lng, lat, height);
     }
 
     worldPositionToWgs84(cartesian3){
         // const ellipsoid = viewer.scene.globe.ellipsoid;
         // const cartographic = ellipsoid.cartesianToCartographic(cartesian3);
-        const cartographic = Cartographic.fromCartesian(cartesian3);
-        const lat = Math.toDegrees(cartographic.latitude);
-        const lng = Math.toDegrees(cartographic.longitude);
+        const cartographic = Cesium.Cartographic.fromCartesian(cartesian3);
+        const lat = Cesium.Math.toDegrees(cartographic.latitude);
+        const lng = Cesium.Math.toDegrees(cartographic.longitude);
         const height = cartographic.height;
 
         return {lng, lat, height};
@@ -26,8 +26,8 @@ export default class Coords {
     }
 
     wgs84ToScreenPosition({lng, lat, height}){
-        const cartesian3 = Cartesian3.fromDegrees(lng, lat, height);
-        const cartesian2 = SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, cartesian3);
+        const cartesian3 = Cesium.Cartesian3.fromDegrees(lng, lat, height);
+        const cartesian2 = Cesium.SceneTransforms.wgs84ToWindowCoordinates(this.viewer.scene, cartesian3);
         return cartesian2;
     }
 }

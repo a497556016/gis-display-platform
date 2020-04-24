@@ -1,5 +1,5 @@
 export default {
     setup(){
-        this.$maps.setLayer("arcGIS")
+        this.$viewer.maps.setMapLayer("arcGIS")
     }
 }

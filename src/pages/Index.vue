@@ -54,7 +54,7 @@
             openWindow(menu) {
                 if(menu.path) {
                     const options = menu.options || {
-                        type: menu.type || "1",
+                        type: menu.type,
                         url: menu.path,
                         title: menu.title,
                         success: () => {
@@ -62,6 +62,7 @@
                         },
                         close: () => {
                             this.$viewer.dataSources.removeAll();
+                            this.$viewer.entities.removeAll();
                         }
                     };
                     console.log(options);

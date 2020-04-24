@@ -7,7 +7,7 @@ export default class Maps {
         this.viewer = viewer;
     }
 
-    setLayer(layerType){
+    setMapLayer(layerType){
         console.log(this.viewer.imageryLayers);
         this.viewer.imageryLayers.removeAll();
         switch (layerType) {

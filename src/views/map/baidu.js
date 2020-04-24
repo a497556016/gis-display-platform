@@ -1,5 +1,5 @@
 export default {
     setup(){
-        this.$maps.setLayer("baidu");
+        this.$viewer.maps.setMapLayer("baidu");
     }
 }

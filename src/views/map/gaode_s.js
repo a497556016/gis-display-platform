@@ -1,5 +1,5 @@
 export default {
     setup(){
-        this.$maps.setLayer('gaode_s');
+        this.$viewer.maps.setMapLayer('gaode_s');
     }
 }

@@ -1,5 +1,5 @@
 export default {
     setup(){
-        this.$maps.setLayer('tianditu_s');
+        this.$viewer.maps.setMapLayer('tianditu_s');
     }
 }

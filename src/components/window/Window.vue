@@ -15,6 +15,18 @@
 </template>
 
 <script>
+    const leftStyle = {
+        bottom: 0,
+        left: 0,
+        width: '300px',
+        height: '900px'
+    };
+    const centerStyle = {
+        bottom: '100px',
+        left: '350px',
+        width: '1200px',
+        height: '800px'
+    };
     export default {
         name: "Window",
         data(){
@@ -29,7 +41,7 @@
                     left: 0,
                     right: 0
                 },
-                type: '1',
+                type: 'left',
                 history: [],
                 title: '',
                 outerLink: null,
@@ -39,32 +51,17 @@
         created(){
             switch (this.type) {
                 default:
-                    this.windowStyle = {
-                        bottom: 0,
-                        left: 0,
-                        width: '300px',
-                        height: '900px'
-                    };
+                    this.windowStyle = leftStyle;
                     break;
-                case '1':
-                    this.windowStyle = {
-                        bottom: 0,
-                        left: 0,
-                        width: '300px',
-                        height: '900px'
-                    };
+                case 'left':
+                    this.windowStyle = leftStyle;
                     break;
-                case '2':
-                    this.windowStyle = {
-                        bottom: '100px',
-                        left: '350px',
-                        width: '1200px',
-                        height: '800px'
-                    };
+                case 'center':
+                    this.windowStyle = centerStyle;
                     break;
-                case '3':
+                case 'right':
                     break;
-                case '4':
+                case 'top':
                     break;
             }
         },

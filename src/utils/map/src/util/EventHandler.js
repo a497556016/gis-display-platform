@@ -102,7 +102,16 @@ export default class EventHandler {
     }
 
     removeById(id) {
-        const index = _.findIndex(this.leftClickHandlers, {id});
-        this.leftClickHandlers.splice(index, 1);
+        function remove(id, handlers) {
+            let index = _.findIndex(handlers, {id});
+            if(index !== -1) {
+                handlers.splice(index, 1);
+            }
+        }
+
+        remove(id, this.leftClickHandlers);
+        remove(id, this.leftDoubleClickHandlers);
+        remove(id, this.rightClickHandlers);
+        remove(id, this.mouseMoveHandlers);
     }
 }

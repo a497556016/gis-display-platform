@@ -1,5 +1,6 @@
 import CesiumComponent from "./Cesium";
 import CustomLayer from "../../utils/layers/CustomLayer";
+import map from "../../utils/map";
 
 export default {
     install(Vue) {

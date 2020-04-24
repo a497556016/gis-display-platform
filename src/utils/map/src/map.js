@@ -60,6 +60,7 @@ const initCommonEventListener = function(eventHandler){
 };
 
 import Maps from "./util/Maps";
+import Coords from "./util/Coords";
 
 export const createMap = function(containerId, config) {
     Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI1ZWM1YTUwNi1mYTJkLTRkOGMtYjlkOC0wMTMwOTc0ZWFjNjkiLCJpZCI6NDExMSwic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTUzOTkxMTkyN30.A4seHeGwk82dubtb_HtbYNBC9K-79xLemvr77vjvTDs';
@@ -112,6 +113,7 @@ export const createMap = function(containerId, config) {
 
     viewer.eventHandler = new EventHandler(viewer);
     viewer.maps = new Maps(viewer);
+    viewer.coords = new Coords(viewer);
 
     initCommonEventListener(viewer.eventHandler);
 

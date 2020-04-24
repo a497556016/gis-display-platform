@@ -2,8 +2,6 @@ import * as turf from "@turf/turf"
 import map from "../map";
 import * as Cesium from "cesium";
 
-import geojson from "./data/edit"
-
 export default class RoadLayer extends map.layers.GeoJsonLayer{
     loadData() {
         return new Promise(resolve => {
@@ -18,7 +16,7 @@ export default class RoadLayer extends map.layers.GeoJsonLayer{
                 });
             //[[113.91859889030457, 22.52692752228728], [113.91801953315732, 22.524291378255494], [113.91780495643616, 22.52326069172308], [113.91746163368228, 22.521972322745285], [113.91726851463318, 22.521139831785973], [113.91688227653503, 22.52074340575679], [113.9159381389618, 22.519851443032948], [113.91467213630676, 22.518563042267687], [113.91437172889712, 22.518265717308324]]
             const geoJsonData = turf.featureCollection([lineFeature]);
-            resolve(geojson);
+            resolve(geoJsonData);
         });
     }
 }
