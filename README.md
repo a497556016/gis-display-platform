@@ -49,7 +49,16 @@ import map from "map";
 
 const entityUtils = new map.utils.EntityUtils({
     viewer,
-    config: {},
+    config: {
+        type: 'billboard',
+        tooltip: '图标',
+        description: '',
+        style: {
+            image: '/images/markers/thunder-marker.png',
+            scale: 0.8,
+            clampToGround: true
+        }
+    },
     hasEdit: true
 });
 
@@ -78,6 +87,16 @@ entityUtils.removeAll();
 entityUtils.destroy();
 
 ```
+##### config配置说明
+|配置项|默认|说明|
+|:--:|:--:|:--|
+|type|无|'billboard': 图标<br>'polyline': 线<br>'polygon': 面<br>暂时只完成这几个|
+|id|无|id|
+|tooltip|无|鼠标移入时的提示信息|
+|description|无|描述信息|
+|style|无|样式配置，详见 style配置|
+##### style配置说明
+
 
 ## Project setup
 ```
