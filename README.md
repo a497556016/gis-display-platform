@@ -46,21 +46,34 @@ handler = {
 * 图上标绘
 ```
 import map from "map";
+
 const entityUtils = new map.utils.EntityUtils({
     viewer,
     config: {},
     hasEdit: true
 });
+
 //创建实体
-entityUtils.create(config, noEdit?);
+const entity = entityUtils.create(config, noEdit?);
+
 //开始编辑
 entityUtils.startEdit();
+
 //停止编辑
 entityUtils.stopEdit();
+
 //保存为geojson
-entityUtils.saveEdit();
+const geojson = entityUtils.saveEdit();
+
+//将geojson格式文件转换为实体集合,autoDraw表示自动绘制，默认不绘制
+const entities = entityUtils.fromGeoJson(geojson, autoDraw);
+
+//在地图上绘制实体
+entityUtils.drawEntities(entities)
+
 //移除所有标记
 entityUtils.removeAll();
+
 //销毁
 entityUtils.destroy();
 

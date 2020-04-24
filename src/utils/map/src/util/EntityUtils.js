@@ -141,7 +141,7 @@ export default class EntityUtils {
         commonUtils.files.saveAs(content, Cesium.createGuid()+'.json');
     }
 
-    fromGeoJson(geoJson){
+    fromGeoJson(geoJson, autoDraw){
         if(typeof geoJson === 'object' && geoJson.type === 'FeatureCollection' && geoJson.features.length) {
             const entities = geoJson.features.map(({ type, properties, geometry }) => {
                 if(type === 'Feature') {
@@ -176,6 +176,11 @@ export default class EntityUtils {
                 }
                 return null;
             }).filter(entity => entity !== null);
+
+            if(entities.length && autoDraw) {
+                this.drawEntities(entities);
+            }
+
             return entities;
         }
         return [];
